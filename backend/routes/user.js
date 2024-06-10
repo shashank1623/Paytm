@@ -2,8 +2,118 @@
 // Route all requests  that go to /api/v1/user to the user router.
 
 const express = require("express");
+const zod = require("zod");
+const { User } = require("../db");
+const jwt = require("jsonwebtoken");
+const {JWT_SECRET} = require("../config");
+const  { authMiddleware } = require("../middleware");
 const router = express.Router();
 
+// 1. singup
+// This route needs to get user information, do input validation using zod and store the information in the database provided
+//  1. Inputs are correct (validated via zod)
+//  2. Database doesn’t already contain another user
 
+const singupSchema = zod.object({
+    username : zod.string().email(),
+    password : zod.string(),
+    firstName : zod.string(),
+    lastName : zod.string()
+
+})
+
+router.post("/signup", async (req,res)=>{
+    // get the user information
+    const body = req.body;
+    // validate the user information using zod
+    const {success} = singupSchema.safeParse(body);
+    if(!success){
+        return res.status(411).json({
+            message : "Email already taken / Incorrect inputs"
+        })
+    }
+    
+    const user = User.findOne({username : body.username});
+    if(user._id){
+        return res.status(411).json({
+            message : "Email already taken / Incorrect inputs"
+        })
+    }
+
+    // store the information in the database
+    const dbUser = await User.create(body);
+    const token = jwt.sign({
+        userId : dbUser._id,
+
+    },JWT_SECRET)
+    res.json({
+        message : "User created successfully",
+        token : token
+    })
+    
+})
+
+// 2. signin
+// Let’s an existing user sign in to get back a token.
+const signinBody = zod.object({
+    username : zod.string().email(),
+    password : zod.string()
+})
+router.post("/signin",async (req,res)=>{
+    const {success} = signinBody.safeParse(req.body);
+    if(!success){
+        return res.status(411).json({
+            message : "Incorrect inputs"
+        })
+    }
+
+    const user = await User.findOne({
+        username : req.body.username,
+        password : req.body.password
+    });
+
+    if(user){
+        const token = jwt.sign({
+            userId : user._id
+        },JWT_SECRET)
+
+        res.json({
+            token : token
+        })
+        return;
+    }
+
+    res.status(411).json({
+        message : "Error while logging in"
+    })
+})
+
+// . Route to update user information
+// User should be allowed to optionally send either or all of
+// password
+// firstName
+// lastName
+// Whatever they send, we need to update it in the database for the user.
+
+const updateBody = zod.object({
+    password : zod.string().optional(),
+    firstName : zod.string().optional(),
+    lastName : zod.string().optional()
+})
+
+router.put("/",authMiddleware, async (req,res)=>{
+    const { success } = updateBody.safeParse(req.body)
+    if (!success) {
+        res.status(411).json({
+            message: "Error while updating information"
+        })
+    }
+
+		await User.updateOne({ _id: req.userId }, req.body);
+	
+    res.json({
+        message: "Updated successfully"
+    })
+})
 
 module.exports = router;

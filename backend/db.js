@@ -10,7 +10,7 @@
 // Export the mongoose model from the file (call it User)
 
 const mongoose = require('mongoose');
-mongoose.connect('your_db_url')
+mongoose.connect('mongodb+srv://theghost:UmnB9y9sVtpAt1ut@cluster0.8zcgi4d.mongodb.net/Paytm')
 
 // simple way to create schema
 // const userSchma = new mongoose.Schema({
