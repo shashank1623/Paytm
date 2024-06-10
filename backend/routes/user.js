@@ -109,10 +109,41 @@ router.put("/",authMiddleware, async (req,res)=>{
         })
     }
 
-		await User.updateOne({ _id: req.userId }, req.body);
+	await User.updateOne({ _id: req.userId }, req.body);
 	
     res.json({
         message: "Updated successfully"
+    })
+})
+
+// Route to get users from the backend, filterable via firstName/lastName
+// This is needed so users can search for their friends and send them money
+
+// Method: GET
+// Route: /api/v1/user/bulk
+// Query Parameter: ?filter=harkirat
+
+router.get("/bulk", authMiddleware, async (req,res)=>{
+    const filter = req.query.filter || "";
+    const users = await User.find({
+        $or: [{
+            firstName: {
+                "$regex": filter
+            }
+        }, {
+            lastName: {
+                "$regex": filter
+            }
+        }]
+    })
+
+    res.json({
+        user: users.map(user => ({
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            _id: user._id
+        }))
     })
 })
 
