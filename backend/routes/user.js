@@ -2,12 +2,14 @@
 // Route all requests  that go to /api/v1/user to the user router.
 
 const express = require("express");
+const router = express.Router();
 const zod = require("zod");
 const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const {JWT_SECRET} = require("../config");
 const  { authMiddleware } = require("../middleware");
-const router = express.Router();
+
+
 
 // 1. singup
 // This route needs to get user information, do input validation using zod and store the information in the database provided
