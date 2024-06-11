@@ -49,10 +49,25 @@ const userSchema  = new mongoose.Schema({
     }
 })
 
+const accountSchema = new mongoose.Schema({
+    userId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'User',
+        required : true
+    },
+    balance : {
+        type : Number,
+        required : true
+    }
+
+})
+
 // create a model from the schema
 const User = mongoose.model('User', userSchma)
+const Account = mongoose.model('Account', accountSchema)
 
 //export the user schema
 module.exports = {
-    User
+    User,
+    Account
 }
