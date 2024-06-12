@@ -7,8 +7,13 @@ app.use(cors());
 app.use(express.json());
 
 
+app.get("/",(req,res)=>{
+    res.send("I'm alive")
+})
 
-app.use("api/v1/", mainRouter )
+
+
+app.use("/api/v1/", mainRouter )
 
 
 app.listen(8080,()=>{

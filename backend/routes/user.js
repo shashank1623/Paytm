@@ -11,10 +11,14 @@ const  { authMiddleware } = require("../middleware");
 
 
 
+router.get("/",(req,res)=>{
+    res.send("I'm alive")
+})
 // 1. singup
 // This route needs to get user information, do input validation using zod and store the information in the database provided
 //  1. Inputs are correct (validated via zod)
 //  2. Database doesn’t already contain another user
+
 
 const singupSchema = zod.object({
     username : zod.string().email(),

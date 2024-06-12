@@ -7,6 +7,9 @@ const accountRouter = require("./account");
 
 const router = express.Router();
 
+router.get("/",(req,res)=>{
+    res.send("I'm alive")
+})
 router.use("/user", userRouter); 
 router.use("/account",accountRouter)
 
