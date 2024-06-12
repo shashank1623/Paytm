@@ -1,4 +1,4 @@
 
 module.exports = {
-    jwtPassword : "kyaBaatHai",
+    JWT_SECRET : "kyaBaatHai",
 }
