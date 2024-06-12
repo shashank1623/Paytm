@@ -10,7 +10,7 @@
 // Export the mongoose model from the file (call it User)
 
 const mongoose = require('mongoose');
-mongoose.connect('your_mongo_url')
+mongoose.connect('your_mongo_url');
 
 // simple way to create schema
 // const userSchma = new mongoose.Schema({
@@ -28,7 +28,7 @@ const userSchema  = new mongoose.Schema({
         trim : true,
         lowercase : true,
         minLength : 4,
-        maxLength : 20
+        maxLength : 60
     },
     password : {
         type : String,
@@ -41,7 +41,7 @@ const userSchema  = new mongoose.Schema({
         trim : true,
         maxLength : 50
     },
-    lastname : {
+    lastName : {
         type : String,
         required : true,
         trim : true,
@@ -51,7 +51,7 @@ const userSchema  = new mongoose.Schema({
 
 const accountSchema = new mongoose.Schema({
     userId : {
-        type : mongoose.Schema.Types.ObjectId,
+        type : mongoose.Schema.Types.ObjectId, //refers to the user schema
         ref : 'User',
         required : true
     },
@@ -63,7 +63,7 @@ const accountSchema = new mongoose.Schema({
 })
 
 // create a model from the schema
-const User = mongoose.model('User', userSchma)
+const User = mongoose.model('User', userSchema)
 const Account = mongoose.model('Account', accountSchema)
 
 //export the user schema
