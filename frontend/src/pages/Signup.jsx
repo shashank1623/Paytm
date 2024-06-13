@@ -12,6 +12,8 @@ export const Signup = () =>{
 
     const [firstName , setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [username,setUsername] = useState("");
+    const [password,setPassword] = useState("");
     const navigate = useNavigate();
 
     return <div className="bg-slate-300 h-screen flex justify-center">
@@ -28,8 +30,15 @@ export const Signup = () =>{
                     setLastName(e.target.value)
                 }} placeholder="Doe" label={"Last Name"}/>
 
-            
+                
+                <InputBox onChange={e=>{
+                    setUsername(e.target.value)
+                }} placeholder="jhonDoe@gamil.com" label={"Email"}/>
 
+                <InputBox onChange={e=>{
+                    setPassword(e.target.value)
+                }} placeholder="*******" label={"Password"}/>
+            
                 <div className="pt-4">
                     <Button onClick={async ()=>{
                         const response = await axios.post("http://localhost:8080/api/v1/user/signup",{
