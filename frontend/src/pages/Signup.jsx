@@ -43,7 +43,9 @@ export const Signup = () =>{
                     <Button onClick={async ()=>{
                         const response = await axios.post("http://localhost:8080/api/v1/user/signup",{
                             firstName,
-                            lastName
+                            lastName,
+                            username,
+                            password
                         });
 
                         localStorage.setItem("token",response.data.token)
