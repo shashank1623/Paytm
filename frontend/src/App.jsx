@@ -4,6 +4,7 @@ import {Signin} from "./pages/Signin"
 import {Home} from "./pages/Home"
 import { Dashboard } from './pages/Dashboard'
 import {PrivateRoute} from './components/PrivateRoute'
+import { SendMoney } from './pages/SendMoney'
 function App() {
 
   return (
@@ -13,7 +14,8 @@ function App() {
         <Route path="/" element={<Home/>}></Route>
         <Route path='/signup' element={<Signup/>}></Route>
         <Route path="/signin" element={<Signin/>}></Route>
-        <Route path='/dashboard' element={<PrivateRoute element={<Dashboard/>}/>}></Route>
+        <Route path='/dashboard' element={<PrivateRoute element={<Dashboard/>}/>}/>
+        <Route path='/send' element={<SendMoney/>}/>
       </Routes>
       </BrowserRouter>
     </>
